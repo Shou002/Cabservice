@@ -12,8 +12,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(String email, String password) {
-        user user = userRepository.findByEmail(email);
+    public boolean login(String name, String password) {
+        user user = userRepository.findByName(name);
         return user != null && user.getPassword().equals(password);
     }
 
@@ -21,11 +21,15 @@ public class UserService {
         if (userRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email already exists!");
         }
+        if (userRepository.findByName(name) != null) {
+            throw new RuntimeException("Name already exists!");
+        }
 
         user newUser = new user();
         newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPassword(password);
+        newUser.setRole("user");
 
         return userRepository.save(newUser);
     }
