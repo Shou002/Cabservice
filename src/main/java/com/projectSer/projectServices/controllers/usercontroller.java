@@ -1,10 +1,12 @@
 package com.projectSer.projectServices.controllers;
 
+import com.projectSer.projectServices.DTO.UserDTO;
 import com.projectSer.projectServices.Services.UserService;
 import com.projectSer.projectServices.models.user;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -17,8 +19,14 @@ public class usercontroller {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestParam String name, @RequestParam String password) {
-        return userService.login(name, password);
+    public ResponseEntity<?> login(@RequestParam String name, @RequestParam String password){
+        user user = userService.login(name, password);
+        if(user != null){
+            UserDTO userDTO = new UserDTO(user.getName(), user.getRole());
+            return ResponseEntity.ok(userDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
     @PostMapping("/register")

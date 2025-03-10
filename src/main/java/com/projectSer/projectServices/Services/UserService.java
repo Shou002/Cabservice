@@ -12,9 +12,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(String name, String password) {
+    public user login(String name, String password) {
         user user = userRepository.findByName(name);
-        return user != null && user.getPassword().equals(password);
+        if(user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
     }
 
     public user registerUser(String name, String email, String password) {
