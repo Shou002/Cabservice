@@ -1,6 +1,6 @@
 package com.projectSer.projectServices.enums;
 
 public enum DriverStatus {
-    busy,
-    available
+    AVAILABLE,
+    NOT_AVAILABLE
 }

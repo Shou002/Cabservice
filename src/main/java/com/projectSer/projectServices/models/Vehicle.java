@@ -12,10 +12,11 @@ import com.projectSer.projectServices.enums.vehicleType;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class vehicle {
+public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int veh_id;
+    @Column(name = "veh_id")
+    private int vehId;
 
     @ManyToOne
     @JoinColumn(name = "driver_id",nullable = false)

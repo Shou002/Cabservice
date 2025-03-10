@@ -1,6 +1,6 @@
 package com.projectSer.projectServices.Services;
 
-import com.projectSer.projectServices.models.user;
+import com.projectSer.projectServices.models.User;
 import com.projectSer.projectServices.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public user login(String name, String password) {
-        user user = userRepository.findByName(name);
+    public User login(String name, String password) {
+        User user = userRepository.findByName(name);
         if(user != null && user.getPassword().equals(password)) {
             return user;
         }
         return null;
     }
 
-    public user registerUser(String name, String email, String password) {
+    public User registerUser(String name, String email, String password) {
         if (userRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email already exists!");
         }
@@ -28,7 +28,7 @@ public class UserService {
             throw new RuntimeException("Name already exists!");
         }
 
-        user newUser = new user();
+        User newUser = new User();
         newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPassword(password);

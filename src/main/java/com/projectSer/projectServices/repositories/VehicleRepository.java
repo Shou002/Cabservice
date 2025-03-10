@@ -2,15 +2,15 @@ package com.projectSer.projectServices.repositories;
 
 import com.projectSer.projectServices.enums.VehicleStatus;
 import com.projectSer.projectServices.enums.vehicleType;
-import com.projectSer.projectServices.models.vehicle;
+import com.projectSer.projectServices.models.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface VehicleRepository extends JpaRepository<vehicle, Integer> {
-    List<vehicle> findByStatus(VehicleStatus status);
-    List<vehicle> findByType(vehicleType type);
-    List<vehicle> findByDriver_DriverId(int driverId);
-    default List<vehicle> findAvailableVehicles() {
-        return findByStatus(VehicleStatus.available);
+public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
+    List<Vehicle> findByStatus(VehicleStatus status);
+    List<Vehicle> findByType(vehicleType type);
+    List<Vehicle> findByDriver_DriverId(int driverId);
+    default List<Vehicle> findAvailableVehicles() {
+        return findByStatus(VehicleStatus.AVAILABLE);
     }
 }
