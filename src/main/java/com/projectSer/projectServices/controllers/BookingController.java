@@ -30,4 +30,25 @@ public class BookingController {
     public ResponseEntity<List<BookingResponse>> getUserBookings(@PathVariable int userId) {
         return ResponseEntity.ok(bookingService.getBookingsByUserId(userId));
     }
+
+    @PutMapping("/complete/{booId}")
+    public ResponseEntity<?> completeBooking(@PathVariable int booId){
+        try{
+            BookingResponse updateBooking = bookingService.completeBooking(booId);
+            return ResponseEntity.ok(updateBooking);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/cancel/{booId}")
+    public ResponseEntity<?> cancelBooking(@PathVariable int booId) {
+        try {
+            BookingResponse response = bookingService.cancelBooking(booId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

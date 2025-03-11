@@ -4,7 +4,7 @@ import com.projectSer.projectServices.enums.BookingStatus;
 import java.util.Date;
 import lombok.Data;
 
-@Data // Generates getters, setters, toString, equals, and hashCode
+@Data
 public class BookingResponse {
     private int booId;
     private String vehicleName;

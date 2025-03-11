@@ -15,6 +15,7 @@ import com.projectSer.projectServices.repositories.VehicleRepository;
 import com.projectSer.projectServices.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,4 +94,74 @@ public class BookingService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public BookingResponse completeBooking(int booId){
+        Booking booking = bookingRepository.findById(booId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if(booking.getStatus() == BookingStatus.COMPLETED){
+            throw new RuntimeException("Booking is already completed");
+        }
+
+        booking.setStatus(BookingStatus.COMPLETED);
+        bookingRepository.save(booking);
+
+        Vehicle vehicle = booking.getVehicle();
+        vehicle.setStatus(VehicleStatus.AVAILABLE);
+        vehicleRepository.save(vehicle);
+
+        Driver driver = booking.getDriver();
+        driver.setStatus(DriverStatus.AVAILABLE);
+        driverRepository.save(driver);
+
+        return new BookingResponse(
+                booking.getBooId(),
+                vehicle.getVeh_name(),
+                driver.getName(),
+                booking.getPickupLoc(),
+                booking.getDestination(),
+                booking.getDate(),
+                booking.getRentalTime(),
+                booking.getDistance(),
+                booking.getFinalPrice(),
+                booking.getStatus()
+        );
+    }
+
+    @Transactional
+    public BookingResponse cancelBooking(int booId) {
+        Booking booking = bookingRepository.findById(booId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (booking.getStatus() == BookingStatus.COMPLETED) {
+            throw new RuntimeException("Cannot cancel a completed booking");
+        }
+
+        booking.setStatus(BookingStatus.CANCELED);
+        bookingRepository.save(booking);
+
+        Vehicle vehicle = booking.getVehicle();
+        vehicle.setStatus(VehicleStatus.AVAILABLE);
+        vehicleRepository.save(vehicle);
+
+        Driver driver = booking.getDriver();
+        driver.setStatus(DriverStatus.AVAILABLE);
+        driverRepository.save(driver);
+
+        return new BookingResponse(
+                booking.getBooId(),
+                vehicle.getVeh_name(),
+                driver.getName(),
+                booking.getPickupLoc(),
+                booking.getDestination(),
+                booking.getDate(),
+                booking.getRentalTime(),
+                booking.getDistance(),
+                booking.getFinalPrice(),
+                booking.getStatus()
+        );
+    }
+
+
 }
