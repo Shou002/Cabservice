@@ -38,5 +38,16 @@ public class usercontroller {
         return userService.registerUser(name, email, password);
     }
 
+    @PostMapping("/addStaff")
+    public ResponseEntity<?> addStaff(
+            @RequestParam String name,
+            @RequestParam String email,
+            @RequestParam String password
+    ) {
+        User newStaff = userService.addStaff(name, email, password);
+        return ResponseEntity.ok(newStaff);
+    }
+
+
 }
 

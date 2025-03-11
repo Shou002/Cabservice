@@ -36,5 +36,16 @@ public class UserService {
 
         return userRepository.save(newUser);
     }
+
+    public User addStaff(String name, String email, String password) {
+        User staff = new User();
+        staff.setName(name);
+        staff.setEmail(email);
+        staff.setPassword(password);
+        staff.setRole("staff"); // Set role as "staff"
+
+        return userRepository.save(staff);
+    }
+
 }
 
