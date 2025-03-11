@@ -17,7 +17,7 @@ public class vehicleController {
 
     @GetMapping("/available")
     public ResponseEntity<List<Vehicle>> getAvailableVehicles () {
-        List<Vehicle> vehicles = vehicleService.getAvailbleVehicles();
+        List<Vehicle> vehicles = vehicleService.getAvailableVehicles();
         return ResponseEntity.ok(vehicles);
     }
 
@@ -37,5 +37,21 @@ public class vehicleController {
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
         List<Vehicle> vehicles = vehicleService.getAllVehicles();
         return ResponseEntity.ok(vehicles);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addVehicle(
+            @RequestParam String veh_name,
+            @RequestParam String type,
+            @RequestParam double price,
+            @RequestParam int driverId,
+            @RequestParam int capacity
+    ) {
+        try {
+            Vehicle vehicle = vehicleService.addVehicle(veh_name, type, price, driverId, capacity);
+            return ResponseEntity.ok(vehicle);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

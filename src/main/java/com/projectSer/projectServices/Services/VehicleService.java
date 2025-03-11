@@ -1,7 +1,10 @@
 package com.projectSer.projectServices.Services;
 
+import com.projectSer.projectServices.enums.VehicleStatus;
 import com.projectSer.projectServices.enums.vehicleType;
+import com.projectSer.projectServices.models.Driver;
 import com.projectSer.projectServices.models.Vehicle;
+import com.projectSer.projectServices.repositories.DriverRepository;
 import com.projectSer.projectServices.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -12,7 +15,10 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    public List<Vehicle> getAvailbleVehicles() {
+    @Autowired
+    private DriverRepository driverRepository;
+
+    public List<Vehicle> getAvailableVehicles() {
         return vehicleRepository.findAvailableVehicles();
     }
 
@@ -27,4 +33,26 @@ public class VehicleService {
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
     }
+
+    public Vehicle addVehicle(String veh_name, String type, double price, int driverId, int capacity) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setVeh_name(veh_name);
+
+        try {
+            vehicle.setType(vehicleType.valueOf(type.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid vehicle type: " + type);
+        }
+
+        vehicle.setPrice(price);
+        vehicle.setDriver(driver);
+        vehicle.setCapacity(capacity);
+        vehicle.setStatus(VehicleStatus.AVAILABLE);
+
+        return vehicleRepository.save(vehicle);
+    }
+
 }

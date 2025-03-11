@@ -27,6 +27,7 @@ public class Vehicle {
 
     private String Veh_name;
     private double price;
+    private int capacity;
 
     @Enumerated(EnumType.STRING)
     private VehicleStatus status;
