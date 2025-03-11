@@ -1,6 +1,7 @@
 package com.projectSer.projectServices.Services;
 
 import com.projectSer.projectServices.DTO.BookingRequest;
+import com.projectSer.projectServices.DTO.BookingResponse;
 import com.projectSer.projectServices.enums.VehicleStatus;
 import com.projectSer.projectServices.enums.DriverStatus;
 import com.projectSer.projectServices.enums.BookingStatus;
@@ -14,7 +15,8 @@ import com.projectSer.projectServices.repositories.VehicleRepository;
 import com.projectSer.projectServices.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -71,5 +73,24 @@ public class BookingService {
 
         // Save the booking
         return bookingRepository.save(booking);
+    }
+
+    public List<BookingResponse> getBookingsByUserId(int userId) {
+        List<Booking> bookings = bookingRepository.findByUser_Id(userId);
+
+        return bookings.stream()
+                .map(booking -> new BookingResponse(
+                        booking.getBooId(),
+                        booking.getVehicle().getVeh_name(),
+                        booking.getDriver().getName(),
+                        booking.getPickupLoc(),
+                        booking.getDestination(),
+                        booking.getDate(),
+                        booking.getRentalTime(),
+                        booking.getDistance(),
+                        booking.getFinalPrice(),
+                        booking.getStatus()
+                ))
+                .collect(Collectors.toList());
     }
 }
