@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:63342", allowedHeaders = "*", allowCredentials = "true")
 public class usercontroller {
 
     private final UserService userService;
