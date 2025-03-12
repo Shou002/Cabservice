@@ -23,7 +23,7 @@ public class usercontroller {
     public ResponseEntity<?> login(@RequestParam String name, @RequestParam String password){
         User user = userService.login(name, password);
         if(user != null){
-            UserDTO userDTO = new UserDTO(user.getName(), user.getRole());
+            UserDTO userDTO = new UserDTO(user.getName(), user.getRole(), user.getId());
             return ResponseEntity.ok(userDTO);
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
