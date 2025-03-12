@@ -6,6 +6,8 @@ import com.projectSer.projectServices.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DriverService {
     @Autowired
@@ -20,6 +22,10 @@ public class DriverService {
         driver.setStatus(DriverStatus.AVAILABLE);
 
         return driverRepository.save(driver);
+    }
+
+    public List<Driver> getAllDrivers() {
+        return driverRepository.findAll();
     }
 }
 

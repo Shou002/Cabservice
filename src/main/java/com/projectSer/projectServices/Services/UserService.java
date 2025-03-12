@@ -4,6 +4,8 @@ import com.projectSer.projectServices.models.User;
 import com.projectSer.projectServices.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -47,5 +49,8 @@ public class UserService {
         return userRepository.save(staff);
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
 
