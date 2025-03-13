@@ -42,26 +42,26 @@ class BookingServiceTest {
 
     @Test
     void getAllBookings_shouldReturnListOfBookings() {
-        // Arrange
+
         List<Booking> mockBookings = Arrays.asList(new Booking(), new Booking());
         when(bookingRepository.findAll()).thenReturn(mockBookings);
 
-        // Act
+
         List<Booking> result = bookingService.getAllBookings();
 
-        // Assert
+
         assertEquals(2, result.size());
         verify(bookingRepository, times(1)).findAll();
     }
 
     @Test
     void completeBooking_shouldUpdateStatusAndReturnUpdatedBooking() {
-        // Arrange
+
         Booking mockBooking = new Booking();
         mockBooking.setBooId(1);
         mockBooking.setStatus(BookingStatus.PENDING);
 
-        // Mock vehicle and driver
+
         Vehicle mockVehicle = new Vehicle();
         mockVehicle.setVehId(1);
         mockVehicle.setStatus(VehicleStatus.NOT_AVAILABLE);
@@ -70,17 +70,17 @@ class BookingServiceTest {
         mockDriver.setDriverId(1);
         mockDriver.setStatus(DriverStatus.NOT_AVAILABLE);
 
-        // Set relationships
+
         mockBooking.setVehicle(mockVehicle);
         mockBooking.setDriver(mockDriver);
 
         when(bookingRepository.findById(1)).thenReturn(Optional.of(mockBooking));
         when(bookingRepository.save(any(Booking.class))).thenReturn(mockBooking);
 
-        // Act
+
         BookingResponse updatedBooking = bookingService.completeBooking(1);
 
-        // Assert
+
         assertEquals(BookingStatus.COMPLETED, updatedBooking.getStatus());
         verify(bookingRepository, times(1)).save(mockBooking);
     }
